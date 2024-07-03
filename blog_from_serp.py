@@ -26,63 +26,88 @@ def main():
                     padding-left: 1rem;
                     padding-right: 1rem;
                 }
-        </style>
-        """, unsafe_allow_html=True)
-    st.markdown(f"""
-      <style>
-      [class="st-emotion-cache-7ym5gk ef3psqc12"]{{
-            display: inline-block;
-            padding: 5px 20px;
-            background-color: #4681f4;
-            color: #FBFFFF;
-            width: 300px;
-            height: 35px;
+                ::-webkit-scrollbar-track {
+        background: #e1ebf9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #90CAF9;
+            border-radius: 10px;
+            border: 3px solid #e1ebf9;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64B5F6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 16px;
+        }
+
+        div.stButton > button:first-child {
+            background: #1565C0;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
             text-align: center;
             text-decoration: none;
+            display: inline-block;
             font-size: 16px;
-            border-radius: 8px;’
-      }}
+            margin: 10px 2px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+        }
       </style>
     """
     , unsafe_allow_html=True)
 
-    # Hide top header line
-    hide_decoration_bar_style = '<style>header {visibility: hidden;}</style>'
-    st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
-
-    # Hide footer
-    hide_streamlit_footer = '<style>#MainMenu {visibility: hidden;} footer {visibility: hidden;}</style>'
-    st.markdown(hide_streamlit_footer, unsafe_allow_html=True)
-
     # Title and description
     st.title("✍️ Alwrity - AI Blog Post Generator")
+    st.markdown("Create high-quality blog content effortlessly with our AI-powered tool. Ideal for bloggers and content creators. 🚀")
 
     # Input section
-    with st.expander("**PRO-TIP** - Read the instructions below.", expanded=True):
+    with st.expander("**PRO-TIP** - Read the instructions below. 📝", expanded=True):
         input_blog_keywords = st.text_input('**Enter main keywords of your blog!** (Blog Title Or Content Topic)')
         col1, col2, space, col3 = st.columns([5, 5, 0.5, 5])
+    
         with col1:
-            blog_type = st.selectbox('Choose Blog Post Type', ('General', 'How-to Guides', 'Polls', 'Listicles', 
-                'Reality check posts', 'Job Posts', 'FAQs', 'Checklists/Cheat Sheets'), index=0)
+            blog_type = st.selectbox(label='**Choose Blog Post Type** 📄', 
+                                     options=['General', 'How-to Guides', 'Listicles', 'Job Posts', 'Cheat Sheets', 'Customize'], 
+                                     index=0)
+            if blog_type == 'Customize':
+                blog_type = st.text_input("**Enter your custom blog type**")
+        
         with col2:
-            input_blog_tone = st.selectbox('Choose Blog Tone', ('General', 'Professional', 'Casual'), index=0)
+            input_blog_tone = st.selectbox(label='**Choose Blog Tone** 🎨', 
+                                           options=['General', 'Professional', 'Casual', 'Customize'], 
+                                           index=0)
+            if input_blog_tone == 'Customize':
+                input_blog_tone = st.text_input("**Enter your custom blog tone**")
+        
         with col3:
-            input_blog_language = st.selectbox('Choose Language', ('English', 'Vietnamese',
-                'Chinese', 'Hindi', 'Spanish'), index=0)
+            input_blog_language = st.selectbox('**Choose Language** 🌐', 
+                                               options=['English', 'Vietnamese', 'Chinese', 'Hindi', 'Spanish', 'Customize'], 
+                                               index=0)
+            if input_blog_language == 'Customize':
+                input_blog_language = st.text_input("**Enter your custom language**")
+        
         # Generate Blog FAQ button
-        if st.button('**Write Blog Post**'):
-            with st.spinner():
+        if st.button('**Write Blog Post ✍️**'):
+            with st.spinner('Generating your blog post...'):
                 # Clicking without providing data, really ?
                 if not input_blog_keywords:
-                    st.error('** 🫣Provide Inputs to generate Blog Post. Keywords, Required!**')
+                    st.error('**🫣 Provide Inputs to generate Blog Post. Keywords are required!**')
                 elif input_blog_keywords:
-                    blog_post = generate_blog_post(input_blog_keywords, blog_type, 
-                            input_blog_tone, input_blog_language)
+                    blog_post = generate_blog_post(input_blog_keywords, blog_type, input_blog_tone, input_blog_language)
                     if blog_post:
                         st.subheader('**🧕🔬👩 Your Final Blog Post!**')
                         st.write(blog_post)
                     else:
-                        st.error("💥**Failed to generate blog Post. Please try again!**")
+                        st.error("💥 **Failed to generate blog post. Please try again!**")
+
 
 
 # Function to generate blog metadesc
@@ -221,7 +246,7 @@ def generate_text_with_exception_handling(prompt):
             },
         ]
 
-        model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
+        model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest",
                                       generation_config=generation_config,
                                       safety_settings=safety_settings)
 
