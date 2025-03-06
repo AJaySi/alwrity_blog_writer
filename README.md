@@ -19,7 +19,7 @@ requests
 Clone the repository: git clone https://github.com/your-username/alwrity.git
 Install the required dependencies: pip install streamlit openai serper requests
 Set the SERPER_API_KEY environment variable with your Serper API key.
-Run the application: streamlit run alwrity.py
+Run the application: streamlit run blog_from_serp.py
 
 ###Usage:
 Open the Alwrity application in your web browser.
