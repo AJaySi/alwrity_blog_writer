@@ -21,6 +21,13 @@ Install the required dependencies: pip install streamlit openai serper requests
 Set the SERPER_API_KEY environment variable with your Serper API key.
 Run the application: streamlit run blog_from_serp.py
 
+###Installation locally on windows with powershell:
+Step 1 - git clone https://github.com/AJaySi/alwrity_blog_writer.git
+Step 2 - cd alwrity_blog_writer
+Step 3 - $env:METAPHOR_API_KEY = "your_metaphor_api_key_here"
+Step 4 - $env:GOOGLE_API_KEY = "your_google_api_key_here"
+Step 5 - streamlit run blog_from_serp.py
+
 ###Usage:
 Open the Alwrity application in your web browser.
 Enter the main keywords for your blog post.
