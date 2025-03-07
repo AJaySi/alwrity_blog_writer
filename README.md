@@ -28,6 +28,8 @@ Step 3 - $env:METAPHOR_API_KEY = "your_metaphor_api_key_here"
 Step 4 - $env:GOOGLE_API_KEY = "your_google_api_key_here"
 Step 5 - streamlit run blog_from_serp.py
 
+Read complete beginner's guide here - https://www.alwrity.com/post/howto-easily-install-alwrity-blog-writer-on-windows-11-using-powershell
+
 ###Usage:
 Open the Alwrity application in your web browser.
 Enter the main keywords for your blog post.
