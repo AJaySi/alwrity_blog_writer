@@ -155,8 +155,8 @@ def generate_blog_post(input_blog_keywords, input_type, input_tone, input_langua
         3. Format the blog in markdown, ensuring a clean and accessible layout.
         4. Write in a conversational yet informative style that reflects a {input_tone} tone, balancing professionalism with a personable touch.
         5. Use clear, natural language and include personal anecdotes or insights where appropriate to enhance readability and authenticity.
-        6. Additionally, please include the following elements at the beginning of the final output:
-            - A **Blog Title** on the first line.
+        6. Additionally, after the main blog content, append the following SEO metadata:
+            - A **Blog Title**
             - A **Meta Description** that summarizes the blog post.
             - A **URL slug** that is short, easy to read, and formatted in lowercase with hyphens.
             - A list of **Hashtags** relevant to the content.
