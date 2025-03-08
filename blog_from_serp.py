@@ -13,16 +13,95 @@ def main():
     # Apply custom CSS for styling and scrollbar
     st.markdown("""
         <style>
-            .block-container { padding-top: 0rem; padding-bottom: 0rem; padding-left: 1rem; padding-right: 1rem; }
-            ::-webkit-scrollbar-track { background: #e1ebf9; }
-            ::-webkit-scrollbar-thumb { background-color: #90CAF9; border-radius: 10px; border: 3px solid #e1ebf9; }
-            ::-webkit-scrollbar-thumb:hover { background: #64B5F6; }
-            ::-webkit-scrollbar { width: 16px; }
+            /* Use color palette reminiscent of your reference image */
+            /* Shades of Blue: #0073B1, #00BCD4, #F1F8FF, etc. */
+            
+            /* Page Background */
+            body {
+                background-color: #F1F8FF;
+            }
+
+            /* Container (no functionality change) */
+            .block-container {
+                padding: 1rem 2rem;
+                font-family: "Open Sans", sans-serif;
+                max-width: 1100px;
+                margin: auto;
+            }
+
+            /* Headings: use a bold, dark blue #0073B1 */
+            h1, h2, h3, h4, h5, h6 {
+                color: #0073B1 !important;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+            }
+
+            /* Subtle text color for paragraphs */
+            p, div, label {
+                color: #444444;
+            }
+
+            /* Buttons: gradient with a slight hover effect */
             div.stButton > button:first-child {
-                background: #1565C0; color: white; border: none; padding: 12px 24px; 
-                border-radius: 8px; text-align: center; display: inline-block; 
-                font-size: 16px; margin: 10px 2px; cursor: pointer; 
-                transition: background-color 0.3s ease; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); font-weight: bold;
+                background: linear-gradient(135deg, #0073B1 0%, #00BCD4 100%);
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 6px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+            div.stButton > button:first-child:hover {
+                background: linear-gradient(135deg, #005A86 0%, #00A0B8 100%);
+            }
+
+            /* Panels or "card" style for key sections */
+            .stExpander, .stTabs, .stTextInput, .stSelectbox {
+                border: 1px solid #00BCD4 !important;
+                background-color: #ffffff;
+                border-radius: 6px;
+            }
+
+            /* Tooltip style (if you have tooltips) */
+            .tooltip {
+                position: relative;
+                border-bottom: 1px dotted #333;
+                cursor: help;
+            }
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 200px;
+                background-color: #333;
+                color: #fff;
+                text-align: center;
+                border-radius: 4px;
+                padding: 6px;
+                position: absolute;
+                z-index: 1;
+                bottom: 125%;
+                left: 50%;
+                margin-left: -100px;
+                opacity: 0;
+                transition: opacity 0.3s;
+                font-size: 0.9rem;
+            }
+            .tooltip:hover .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            /* Scrollbar: a subtle custom style in line with your palette */
+            ::-webkit-scrollbar {
+                width: 12px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #E1EBF9;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: linear-gradient(135deg, #0073B1, #00BCD4);
+                border-radius: 6px;
             }
         </style>
     """, unsafe_allow_html=True)
@@ -93,7 +172,12 @@ def generate_blog_post(input_blog_keywords, input_type, input_tone, input_langua
         3. Format the blog in markdown, ensuring a clean and accessible layout.
         4. Write in a conversational yet informative style that reflects a {input_tone} tone, balancing professionalism with a personable touch.
         5. Use clear, natural language and include personal anecdotes or insights where appropriate to enhance readability and authenticity.
-        6. The final blog post should clearly demonstrate experience, expertise, authoritativeness, and trustworthiness.
+        6. Additionally, after the main blog content, append the following SEO metadata:
+            - A **Blog Title**
+            - A **Meta Description** that summarizes the blog post.
+            - A **URL slug** that is short, easy to read, and formatted in lowercase with hyphens.
+            - A list of **Hashtags** relevant to the content.
+        7. The final blog post should clearly demonstrate experience, expertise, authoritativeness, and trustworthiness.
 
         Blog keywords: {input_blog_keywords}
         Google SERP results: {serp_results}
