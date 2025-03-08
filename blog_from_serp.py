@@ -13,78 +13,95 @@ def main():
     # Apply custom CSS for styling and scrollbar
     st.markdown("""
         <style>
-             /* Global container styling for a clean background and padding */
+            /* Use color palette reminiscent of your reference image */
+            /* Shades of Blue: #0073B1, #00BCD4, #F1F8FF, etc. */
+            
+            /* Page Background */
+            body {
+                background-color: #F1F8FF;
+            }
+
+            /* Container (no functionality change) */
             .block-container {
-                padding: 1rem 1rem;
-                background: #f8f9fa;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                padding: 1rem 2rem;
+                font-family: "Open Sans", sans-serif;
+                max-width: 1100px;
+                margin: auto;
             }
-            /* Custom scrollbar styling with gradient */
-            ::-webkit-scrollbar-track {
-                background: #e1ebf9;
+
+            /* Headings: use a bold, dark blue #0073B1 */
+            h1, h2, h3, h4, h5, h6 {
+                color: #0073B1 !important;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
             }
-            ::-webkit-scrollbar-thumb {
-                background: linear-gradient(135deg, #90CAF9, #64B5F6);
-                border-radius: 10px;
-                border: 3px solid #e1ebf9;
+
+            /* Subtle text color for paragraphs */
+            p, div, label {
+                color: #444444;
             }
-            ::-webkit-scrollbar {
-                width: 16px;
-            }
-            /* Button styling with gradient and shadow for a modern look */
+
+            /* Buttons: gradient with a slight hover effect */
             div.stButton > button:first-child {
-                background: linear-gradient(135deg, #1565C0, #1976D2);
+                background: linear-gradient(135deg, #0073B1 0%, #00BCD4 100%);
                 color: white;
                 border: none;
                 padding: 12px 24px;
-                border-radius: 8px;
-                text-align: center;
+                border-radius: 6px;
                 font-size: 16px;
-                margin: 10px 2px;
+                font-weight: 600;
                 cursor: pointer;
-                transition: background-color 0.3s ease;
-                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-                font-weight: bold;
+                transition: background 0.3s ease;
             }
-            /* SEO metadata container styling */
-            .seo-container {
-                background: linear-gradient(135deg, #ffffff, #f1f8ff);
-                border-radius: 10px;
-                padding: 20px;
-                margin: 20px 0;
-                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            div.stButton > button:first-child:hover {
+                background: linear-gradient(135deg, #005A86 0%, #00A0B8 100%);
             }
-            /* Tooltip styling for better guidance */
+
+            /* Panels or "card" style for key sections */
+            .stExpander, .stTabs, .stTextInput, .stSelectbox {
+                border: 1px solid #00BCD4 !important;
+                background-color: #ffffff;
+                border-radius: 6px;
+            }
+
+            /* Tooltip style (if you have tooltips) */
             .tooltip {
                 position: relative;
-                cursor: help;
                 border-bottom: 1px dotted #333;
+                cursor: help;
             }
             .tooltip .tooltiptext {
                 visibility: hidden;
-                width: 220px;
+                width: 200px;
                 background-color: #333;
                 color: #fff;
                 text-align: center;
-                border-radius: 6px;
-                padding: 5px;
+                border-radius: 4px;
+                padding: 6px;
                 position: absolute;
                 z-index: 1;
                 bottom: 125%;
                 left: 50%;
-                margin-left: -110px;
+                margin-left: -100px;
                 opacity: 0;
                 transition: opacity 0.3s;
-                font-size: 13px;
+                font-size: 0.9rem;
             }
             .tooltip:hover .tooltiptext {
                 visibility: visible;
                 opacity: 1;
             }
-            /* Input label styling */
-            .input-label {
-                font-weight: 600;
-                margin-bottom: 4px;
+
+            /* Scrollbar: a subtle custom style in line with your palette */
+            ::-webkit-scrollbar {
+                width: 12px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #E1EBF9;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: linear-gradient(135deg, #0073B1, #00BCD4);
+                border-radius: 6px;
             }
         </style>
     """, unsafe_allow_html=True)
