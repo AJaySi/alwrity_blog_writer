@@ -93,7 +93,12 @@ def generate_blog_post(input_blog_keywords, input_type, input_tone, input_langua
         3. Format the blog in markdown, ensuring a clean and accessible layout.
         4. Write in a conversational yet informative style that reflects a {input_tone} tone, balancing professionalism with a personable touch.
         5. Use clear, natural language and include personal anecdotes or insights where appropriate to enhance readability and authenticity.
-        6. The final blog post should clearly demonstrate experience, expertise, authoritativeness, and trustworthiness.
+        6. Additionally, please include the following elements at the beginning of the final output:
+            - A **Blog Title** on the first line.
+            - A **Meta Description** that summarizes the blog post.
+            - A **URL slug** that is short, easy to read, and formatted in lowercase with hyphens.
+            - A list of **Hashtags** relevant to the content.
+        7. The final blog post should clearly demonstrate experience, expertise, authoritativeness, and trustworthiness.
 
         Blog keywords: {input_blog_keywords}
         Google SERP results: {serp_results}
