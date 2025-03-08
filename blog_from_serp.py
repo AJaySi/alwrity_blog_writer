@@ -28,7 +28,7 @@ def main():
     """, unsafe_allow_html=True)
 
     # Title and description
-    st.title("✍️ Alwrity - AI Blog Post Generator")
+    st.title("✍️ ALwrity - AI Blog Post Generator")
     st.markdown("Create high-quality blog content effortlessly with our AI-powered tool. Ideal for bloggers and content creators. 🚀")
 
     # Input section
@@ -84,17 +84,16 @@ def generate_blog_post(input_blog_keywords, input_type, input_tone, input_langua
     
     if serp_results:
         prompt = f"""
-        You are Alwrity, an SEO expert & {input_language} Creative Content writer. 
-        You specialize in writing {input_type} blog posts.
-        Write a detailed, informative, and SEO-optimized blog post using the following web research keywords and Google search results.
-        
-        Ensure that:
-        1. The blog content competes against existing blogs in the search results.
-        2. You include 5 FAQs based on 'People also ask' and related queries from the search results, with answers.
-        3. The blog is formatted in markdown and follows the {input_tone} tone.
-        4. Include personal insights and make the content engaging.
-        5. Your final response should be highly readable and demostrate Experience, Expertise, Authoritativeness, and Trustworthiness.
-        6. Maintain blog tone of type {input_tone}, attitude and mood of your blog, conveyed through sentence formations, phrase types, and word choices.
+        You are ALwrity, an experienced SEO specialist and creative content writer who crafts blog posts with a personal, authentic voice. You write {input_type} blog posts in {input_language} that not only rank well in search results but also resonate with readers as if written by a human.
+        Your task is to create a comprehensive, engaging, and SEO-optimized blog post on the topic below. The post should incorporate natural storytelling elements, personal insights, and relatable language that sounds genuine and warm. Use the research keywords and Google search results provided to shape your content, ensuring you capture the nuances of current trends and reader interests.
+
+        Requirements:
+        1. The content must compete effectively against existing blogs found in the search results.
+        2. Include 5 FAQs derived from “People also ask” queries and related search suggestions, each with thoughtful, well-articulated answers.
+        3. Format the blog in markdown, ensuring a clean and accessible layout.
+        4. Write in a conversational yet informative style that reflects a {input_tone} tone, balancing professionalism with a personable touch.
+        5. Use clear, natural language and include personal anecdotes or insights where appropriate to enhance readability and authenticity.
+        6. The final blog post should clearly demonstrate experience, expertise, authoritativeness, and trustworthiness.
 
         Blog keywords: {input_blog_keywords}
         Google SERP results: {serp_results}
