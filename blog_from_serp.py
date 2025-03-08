@@ -13,16 +13,78 @@ def main():
     # Apply custom CSS for styling and scrollbar
     st.markdown("""
         <style>
-            .block-container { padding-top: 0rem; padding-bottom: 0rem; padding-left: 1rem; padding-right: 1rem; }
-            ::-webkit-scrollbar-track { background: #e1ebf9; }
-            ::-webkit-scrollbar-thumb { background-color: #90CAF9; border-radius: 10px; border: 3px solid #e1ebf9; }
-            ::-webkit-scrollbar-thumb:hover { background: #64B5F6; }
-            ::-webkit-scrollbar { width: 16px; }
+             /* Global container styling for a clean background and padding */
+            .block-container {
+                padding: 1rem 1rem;
+                background: #f8f9fa;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+            /* Custom scrollbar styling with gradient */
+            ::-webkit-scrollbar-track {
+                background: #e1ebf9;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: linear-gradient(135deg, #90CAF9, #64B5F6);
+                border-radius: 10px;
+                border: 3px solid #e1ebf9;
+            }
+            ::-webkit-scrollbar {
+                width: 16px;
+            }
+            /* Button styling with gradient and shadow for a modern look */
             div.stButton > button:first-child {
-                background: #1565C0; color: white; border: none; padding: 12px 24px; 
-                border-radius: 8px; text-align: center; display: inline-block; 
-                font-size: 16px; margin: 10px 2px; cursor: pointer; 
-                transition: background-color 0.3s ease; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); font-weight: bold;
+                background: linear-gradient(135deg, #1565C0, #1976D2);
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 8px;
+                text-align: center;
+                font-size: 16px;
+                margin: 10px 2px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                font-weight: bold;
+            }
+            /* SEO metadata container styling */
+            .seo-container {
+                background: linear-gradient(135deg, #ffffff, #f1f8ff);
+                border-radius: 10px;
+                padding: 20px;
+                margin: 20px 0;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            /* Tooltip styling for better guidance */
+            .tooltip {
+                position: relative;
+                cursor: help;
+                border-bottom: 1px dotted #333;
+            }
+            .tooltip .tooltiptext {
+                visibility: hidden;
+                width: 220px;
+                background-color: #333;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px;
+                position: absolute;
+                z-index: 1;
+                bottom: 125%;
+                left: 50%;
+                margin-left: -110px;
+                opacity: 0;
+                transition: opacity 0.3s;
+                font-size: 13px;
+            }
+            .tooltip:hover .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+            }
+            /* Input label styling */
+            .input-label {
+                font-weight: 600;
+                margin-bottom: 4px;
             }
         </style>
     """, unsafe_allow_html=True)
