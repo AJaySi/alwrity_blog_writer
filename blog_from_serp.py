@@ -138,6 +138,12 @@ def main():
             if input_blog_language == 'Customize':
                 input_blog_language = st.text_input("**Enter your custom language**", help="Provide a custom language if you chose 'Customize'.")
 
+        # Add a new input field in the UI for users to provide their own API key
+        user_api_key = st.text_input('**Enter your METAPHOR API Key (Optional)**', help="Provide your own API key if the default key is unavailable or has reached its limit.")
+
+        # Add a new input field in the UI for users to provide their own Google API key
+        user_google_api_key = st.text_input('**Enter your Google API Key (Optional)**', help="Provide your own Google API key if the default key is unavailable or not set.")
+
         # Generate Blog FAQ button
         if st.button('**Write Blog Post ✍️**'):
             with st.spinner('Generating your blog post...'):
@@ -145,7 +151,7 @@ def main():
                 if not input_blog_keywords:
                     st.error('**🫣 Provide Inputs to generate Blog Post. Keywords are required!**')
                 else:
-                    blog_post = generate_blog_post(input_blog_keywords, blog_type, input_blog_tone, input_blog_language)
+                    blog_post = generate_blog_post(input_blog_keywords, blog_type, input_blog_tone, input_blog_language, user_api_key, user_google_api_key)
                     if blog_post:
                         st.subheader('**🧕🔬👩 Your Final Blog Post!**')
                         st.write(blog_post)
@@ -154,10 +160,10 @@ def main():
 
 
 # Function to generate the blog post using the LLM
-def generate_blog_post(input_blog_keywords, input_type, input_tone, input_language):
+def generate_blog_post(input_blog_keywords, input_type, input_tone, input_language, user_api_key, user_google_api_key):
     serp_results = None
     try:
-        serp_results = metaphor_search_articles(input_blog_keywords)
+        serp_results = metaphor_search_articles(input_blog_keywords, user_api_key)
     except Exception as err:
         st.error(f"❌ Failed to retrieve search results for {input_blog_keywords}: {err}")
     
@@ -182,31 +188,43 @@ def generate_blog_post(input_blog_keywords, input_type, input_tone, input_langua
         Blog keywords: {input_blog_keywords}
         Google SERP results: {serp_results}
         """
-        return generate_text_with_exception_handling(prompt)
+        return generate_text_with_exception_handling(prompt, user_google_api_key)
     return None
 
 
 # Metaphor search function
-def metaphor_search_articles(query):
-    METAPHOR_API_KEY = os.getenv('METAPHOR_API_KEY')
+def metaphor_search_articles(query, user_api_key):
+    METAPHOR_API_KEY = user_api_key if user_api_key else os.getenv('METAPHOR_API_KEY')
     if not METAPHOR_API_KEY:
-        raise ValueError("METAPHOR_API_KEY environment variable not set!")
+        st.error("❌ Please provide a valid METAPHOR API Key to proceed.")
+        return None
 
     metaphor = Exa(METAPHOR_API_KEY)
-    
+
     try:
         search_response = metaphor.search_and_contents(query, use_autoprompt=True, num_results=5)
         return search_response.results
     except Exception as err:
-        st.error(f"Failed in metaphor.search_and_contents: {err}")
+        error_message = str(err).lower()
+        if "limit exceeded" in error_message:
+            st.error("❌ API limit exceeded. Please provide a new API key or try again later.")
+        elif "invalid api key" in error_message:
+            st.error("❌ The provided METAPHOR API Key is invalid. Please check and try again.")
+        else:
+            st.error(f"Failed in metaphor.search_and_contents: {err}")
         return None
 
 
 # Exception handling for text generation
 @retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(6))
-def generate_text_with_exception_handling(prompt):
+def generate_text_with_exception_handling(prompt, user_google_api_key):
+    GOOGLE_API_KEY = user_google_api_key if user_google_api_key else os.getenv('GOOGLE_API_KEY')
+    if not GOOGLE_API_KEY:
+        st.error("❌ Please provide a valid Google API Key or set up Application Default Credentials (ADC). Refer to https://ai.google.dev/gemini-api/docs/oauth for more information.")
+        return None
+
     try:
-        genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+        genai.configure(api_key=GOOGLE_API_KEY)
         model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest", generation_config={"max_output_tokens": 8192})
         convo = model.start_chat(history=[])
         convo.send_message(prompt)
