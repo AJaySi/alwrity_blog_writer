@@ -85,7 +85,6 @@ def main():
                 margin-left: -100px;
                 opacity: 0;
                 transition: opacity 0.3s;
-                font-size: 0.9rem;
             }
             .tooltip:hover .tooltiptext {
                 visibility: visible;
@@ -109,6 +108,14 @@ def main():
     # Title and description
     st.title("✍️ ALwrity - AI Blog Post Generator")
     st.markdown("Create high-quality blog content effortlessly with our AI-powered tool. Ideal for bloggers and content creators. 🚀")
+
+    # API Key Input Section
+    with st.expander("**API Configuration** 🔑", expanded=False):
+        st.markdown("If the default API keys are unavailable or exceed their limits, you can provide your own API keys below.")
+
+        # Input fields for Metaphor and Gemini API keys
+        user_metaphor_api_key = st.text_input("**Metaphor API Key**", type="password", help="Provide your Metaphor API Key if the default key is unavailable.")
+        user_gemini_api_key = st.text_input("**Gemini API Key**", type="password", help="Provide your Gemini API Key if the default key is unavailable.")
 
     # Input section
     with st.expander("**PRO-TIP** - Read the instructions below. 📝", expanded=True):
@@ -145,19 +152,36 @@ def main():
                 if not input_blog_keywords:
                     st.error('**🫣 Provide Inputs to generate Blog Post. Keywords are required!**')
                 else:
-                    blog_post = generate_blog_post(input_blog_keywords, blog_type, input_blog_tone, input_blog_language)
-                    if blog_post:
-                        st.subheader('**🧕🔬👩 Your Final Blog Post!**')
-                        st.write(blog_post)
-                    else:
-                        st.error("💥 **Failed to generate blog post. Please try again!**")
+                    # Use user-provided API keys if available
+                    metaphor_api_key = user_metaphor_api_key or os.getenv('METAPHOR_API_KEY')
+                    gemini_api_key = user_gemini_api_key or os.getenv('GEMINI_API_KEY')
+
+                    if not metaphor_api_key:
+                        st.error("❌ **Metaphor API Key is not available! Please provide your API key in the API Configuration section.**")
+                        return
+                    if not gemini_api_key:
+                        st.error("❌ **Gemini API Key is not available! Please provide your API key in the API Configuration section.**")
+                        return
+
+                    try:
+                        blog_post = generate_blog_post(input_blog_keywords, blog_type, input_blog_tone, input_blog_language, metaphor_api_key, gemini_api_key)
+                        if blog_post:
+                            st.subheader('**🧕🔬👩 Your Final Blog Post!**')
+                            st.write(blog_post)
+                        else:
+                            st.error("💥 **Failed to generate blog post. Please try again!**")
+                    except Exception as e:
+                        if "quota exceeded" in str(e).lower():
+                            st.error("❌ **API limit exceeded! Please provide your own API key in the API Configuration section.**")
+                        else:
+                            st.error(f"💥 **An unexpected error occurred: {e}**")
 
 
 # Function to generate the blog post using the LLM
-def generate_blog_post(input_blog_keywords, input_type, input_tone, input_language):
+def generate_blog_post(input_blog_keywords, input_type, input_tone, input_language, metaphor_api_key, gemini_api_key):
     serp_results = None
     try:
-        serp_results = metaphor_search_articles(input_blog_keywords)
+        serp_results = metaphor_search_articles(input_blog_keywords, metaphor_api_key)
     except Exception as err:
         st.error(f"❌ Failed to retrieve search results for {input_blog_keywords}: {err}")
     
@@ -182,17 +206,16 @@ def generate_blog_post(input_blog_keywords, input_type, input_tone, input_langua
         Blog keywords: {input_blog_keywords}
         Google SERP results: {serp_results}
         """
-        return generate_text_with_exception_handling(prompt)
+        return generate_text_with_exception_handling(prompt, gemini_api_key)
     return None
 
 
 # Metaphor search function
-def metaphor_search_articles(query):
-    METAPHOR_API_KEY = os.getenv('METAPHOR_API_KEY')
-    if not METAPHOR_API_KEY:
-        raise ValueError("METAPHOR_API_KEY environment variable not set!")
+def metaphor_search_articles(query, api_key):
+    if not api_key:
+        raise ValueError("Metaphor API Key is missing!")
 
-    metaphor = Exa(METAPHOR_API_KEY)
+    metaphor = Exa(api_key)
     
     try:
         search_response = metaphor.search_and_contents(query, use_autoprompt=True, num_results=5)
@@ -204,9 +227,9 @@ def metaphor_search_articles(query):
 
 # Exception handling for text generation
 @retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(6))
-def generate_text_with_exception_handling(prompt):
+def generate_text_with_exception_handling(prompt, api_key):
     try:
-        genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+        genai.configure(api_key=api_key)
         model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest", generation_config={"max_output_tokens": 8192})
         convo = model.start_chat(history=[])
         convo.send_message(prompt)
