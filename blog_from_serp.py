@@ -161,7 +161,7 @@ def metaphor_search_articles(query, api_key):
 def generate_text_with_exception_handling(prompt, api_key):
     try:
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel(model_name="gemini-1.5-flash-latest", generation_config={"max_output_tokens": 8192})
+        model = genai.GenerativeModel(model_name="gemini-2.0-flash", generation_config={"max_output_tokens": 8192})
         convo = model.start_chat(history=[])
         convo.send_message(prompt)
         return convo.last.text
