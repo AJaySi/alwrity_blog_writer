@@ -10,171 +10,102 @@ def main():
     # Set page configuration
     st.set_page_config(page_title="Alwrity - AI Blog Writer", layout="wide")
     
-    # Apply custom CSS for styling and scrollbar
+    # --- ALwrity Theme: Only use proven working CSS selectors ---
     st.markdown("""
         <style>
-            /* Use color palette reminiscent of your reference image */
-            /* Shades of Blue: #0073B1, #00BCD4, #F1F8FF, etc. */
-            
-            /* Page Background */
-            body {
-                background-color: #F1F8FF;
-            }
-
-            /* Container (no functionality change) */
-            .block-container {
-                padding: 1rem 2rem;
-                font-family: "Open Sans", sans-serif;
-                max-width: 1100px;
-                margin: auto;
-            }
-
-            /* Headings: use a bold, dark blue #0073B1 */
-            h1, h2, h3, h4, h5, h6 {
-                color: #0073B1 !important;
-                font-weight: 700;
-                margin-bottom: 0.5rem;
-            }
-
-            /* Subtle text color for paragraphs */
-            p, div, label {
-                color: #444444;
-            }
-
-            /* Buttons: gradient with a slight hover effect */
-            div.stButton > button:first-child {
-                background: linear-gradient(135deg, #0073B1 0%, #00BCD4 100%);
-                color: white;
-                border: none;
-                padding: 12px 24px;
-                border-radius: 6px;
-                font-size: 16px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: background 0.3s ease;
-            }
-            div.stButton > button:first-child:hover {
-                background: linear-gradient(135deg, #005A86 0%, #00A0B8 100%);
-            }
-
-            /* Panels or "card" style for key sections */
-            .stExpander, .stTabs, .stTextInput, .stSelectbox {
-                border: 1px solid #00BCD4 !important;
-                background-color: #ffffff;
-                border-radius: 6px;
-            }
-
-            /* Tooltip style (if you have tooltips) */
-            .tooltip {
-                position: relative;
-                border-bottom: 1px dotted #333;
-                cursor: help;
-            }
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 200px;
-                background-color: #333;
-                color: #fff;
-                text-align: center;
-                border-radius: 4px;
-                padding: 6px;
-                position: absolute;
-                z-index: 1;
-                bottom: 125%;
-                left: 50%;
-                margin-left: -100px;
-                opacity: 0;
-                transition: opacity 0.3s;
-            }
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-                opacity: 1;
-            }
-
-            /* Scrollbar: a subtle custom style in line with your palette */
-            ::-webkit-scrollbar {
-                width: 12px;
-            }
-            ::-webkit-scrollbar-track {
-                background: #E1EBF9;
-            }
-            ::-webkit-scrollbar-thumb {
-                background: linear-gradient(135deg, #0073B1, #00BCD4);
-                border-radius: 6px;
-            }
+        ::-webkit-scrollbar-track {
+            background: #e1ebf9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #90CAF9;
+            border-radius: 10px;
+            border: 3px solid #e1ebf9;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64B5F6;
+        }
+        ::-webkit-scrollbar {
+            width: 16px;
+        }
+        div.stButton > button:first-child {
+            background: #1565C0;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+        }
         </style>
     """, unsafe_allow_html=True)
 
+    # Hide Streamlit header and footer for a clean look
+    st.markdown('<style>header {visibility: hidden;}</style>', unsafe_allow_html=True)
+    st.markdown('<style>#MainMenu {visibility: hidden;} footer {visibility: hidden;}</style>', unsafe_allow_html=True)
+
     # Title and description
-    st.title("✍️ ALwrity - AI Blog Post Generator")
+    st.title("✍️ Alwrity - AI Blog Post Generator")
     st.markdown("Create high-quality blog content effortlessly with our AI-powered tool. Ideal for bloggers and content creators. 🚀")
 
     # API Key Input Section
-    with st.expander("**API Configuration** 🔑", expanded=False):
-        st.markdown("If the default API keys are unavailable or exceed their limits, you can provide your own API keys below.")
-
-        # Input fields for Metaphor and Gemini API keys
-        user_metaphor_api_key = st.text_input("**Metaphor API Key**", type="password", help="Provide your Metaphor API Key if the default key is unavailable.")
-        user_gemini_api_key = st.text_input("**Gemini API Key**", type="password", help="Provide your Gemini API Key if the default key is unavailable.")
+    with st.expander("API Configuration 🔑", expanded=False):
+        st.markdown('''If the default API keys are unavailable or exceed their limits, you can provide your own API keys below.<br>
+        <a href="https://metaphor.systems/" target="_blank">Get Metaphor API Key</a><br>
+        <a href="https://aistudio.google.com/app/apikey" target="_blank">Get Gemini API Key</a>
+        ''', unsafe_allow_html=True)
+        user_metaphor_api_key = st.text_input("Metaphor API Key", type="password", help="Paste your Metaphor API Key here if you have one.")
+        user_gemini_api_key = st.text_input("Gemini API Key", type="password", help="Paste your Gemini API Key here if you have one.")
 
     # Input section
     with st.expander("**PRO-TIP** - Read the instructions below. 📝", expanded=True):
-        input_blog_keywords = st.text_input('**Enter main keywords of your blog!** (Blog Title Or Content Topic)', 
-                                            help="The main topic or title for your blog.")
-        
         col1, col2, col3 = st.columns([5, 5, 5])
-        
         with col1:
-            blog_type = st.selectbox('**Choose Blog Post Type** 📄', 
-                                     options=['General', 'How-to Guides', 'Listicles', 'Job Posts', 'Cheat Sheets', 'Customize'], 
-                                     index=0)
+            input_blog_keywords = st.text_input('**🔑 Enter main keywords of your blog!** (Blog Title Or Content Topic)', help="The main topic or title for your blog.")
+            blog_type = st.selectbox('📝 Blog Post Type', options=['General', 'How-to Guides', 'Listicles', 'Job Posts', 'Cheat Sheets', 'Customize'], index=0)
             if blog_type == 'Customize':
-                blog_type = st.text_input("**Enter your custom blog type**", help="Provide a custom blog type if you chose 'Customize'.")
-        
+                blog_type = st.text_input("Enter your custom blog type", help="Provide a custom blog type if you chose 'Customize'.")
         with col2:
-            input_blog_tone = st.selectbox('**Choose Blog Tone** 🎨', 
-                                           options=['General', 'Professional', 'Casual', 'Customize'], 
-                                           index=0)
+            input_blog_tone = st.selectbox('🎨 Blog Tone', options=['General', 'Professional', 'Casual', 'Customize'], index=0)
             if input_blog_tone == 'Customize':
-                input_blog_tone = st.text_input("**Enter your custom blog tone**", help="Provide a custom blog tone if you chose 'Customize'.")
-        
+                input_blog_tone = st.text_input("Enter your custom blog tone", help="Provide a custom blog tone if you chose 'Customize'.")
         with col3:
-            input_blog_language = st.selectbox('**Choose Language** 🌐', 
-                                               options=['English', 'Vietnamese', 'Chinese', 'Hindi', 'Spanish', 'Customize'], 
-                                               index=0)
+            input_blog_language = st.selectbox('🌐 Language', options=['English', 'Vietnamese', 'Chinese', 'Hindi', 'Spanish', 'Customize'], index=0)
             if input_blog_language == 'Customize':
-                input_blog_language = st.text_input("**Enter your custom language**", help="Provide a custom language if you chose 'Customize'.")
+                input_blog_language = st.text_input("Enter your custom language", help="Provide a custom language if you chose 'Customize'.")
 
-        # Generate Blog FAQ button
+        # Generate Blog Button
         if st.button('**Write Blog Post ✍️**'):
             with st.spinner('Generating your blog post...'):
-                # Input validation
                 if not input_blog_keywords:
                     st.error('**🫣 Provide Inputs to generate Blog Post. Keywords are required!**')
                 else:
-                    # Use user-provided API keys if available
                     metaphor_api_key = user_metaphor_api_key or os.getenv('METAPHOR_API_KEY')
                     gemini_api_key = user_gemini_api_key or os.getenv('GEMINI_API_KEY')
-
                     if not metaphor_api_key:
-                        st.error("❌ **Metaphor API Key is not available! Please provide your API key in the API Configuration section.**")
+                        st.error("❌ Metaphor API Key is not available! Please provide your API key in the API Configuration section.")
                         return
                     if not gemini_api_key:
-                        st.error("❌ **Gemini API Key is not available! Please provide your API key in the API Configuration section.**")
+                        st.error("❌ Gemini API Key is not available! Please provide your API key in the API Configuration section.")
                         return
-
                     try:
                         blog_post = generate_blog_post(input_blog_keywords, blog_type, input_blog_tone, input_blog_language, metaphor_api_key, gemini_api_key)
                         if blog_post:
-                            st.subheader('**🧕🔬👩 Your Final Blog Post!**')
+                            st.subheader('**👩🧕🔬 Your Final Blog Post!**')
                             st.write(blog_post)
                         else:
-                            st.error("💥 **Failed to generate blog post. Please try again!**")
+                            st.error("💥 Failed to generate blog post. Please try again!")
                     except Exception as e:
                         if "quota exceeded" in str(e).lower():
-                            st.error("❌ **API limit exceeded! Please provide your own API key in the API Configuration section.**")
+                            st.error("❌ API limit exceeded! Please provide your own API key in the API Configuration section.")
                         else:
-                            st.error(f"💥 **An unexpected error occurred: {e}**")
+                            st.error(f"💥 An unexpected error occurred: {e}")
 
 
 # Function to generate the blog post using the LLM
