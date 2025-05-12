@@ -118,24 +118,49 @@ def generate_blog_post(input_blog_keywords, input_type, input_tone, input_langua
     
     if serp_results:
         prompt = f"""
-        You are ALwrity, an experienced SEO specialist and creative content writer who crafts blog posts with a personal, authentic voice. You write {input_type} blog posts in {input_language} that not only rank well in search results but also resonate with readers as if written by a human.
-        Your task is to create a comprehensive, engaging, and SEO-optimized blog post on the topic below. The post should incorporate natural storytelling elements, personal insights, and relatable language that sounds genuine and warm. Use the research keywords and Google search results provided to shape your content, ensuring you capture the nuances of current trends and reader interests.
+        You are ALwrity, an experienced SEO strategist and creative content writer who specializes in crafting {input_type} blog posts in {input_language}. Your blog posts are designed to rank highly in search results while deeply engaging readers with a professional yet personable tone.
 
-        Requirements:
-        1. The content must compete effectively against existing blogs found in the search results.
-        2. Include 5 FAQs derived from “People also ask” queries and related search suggestions, each with thoughtful, well-articulated answers.
-        3. Format the blog in markdown, ensuring a clean and accessible layout.
-        4. Write in a conversational yet informative style that reflects a {input_tone} tone, balancing professionalism with a personable touch.
-        5. Use clear, natural language and include personal anecdotes or insights where appropriate to enhance readability and authenticity.
-        6. Additionally, after the main blog content, append the following SEO metadata:
-            - A **Blog Title**
-            - A **Meta Description** that summarizes the blog post.
-            - A **URL slug** that is short, easy to read, and formatted in lowercase with hyphens.
-            - A list of **Hashtags** relevant to the content.
-        7. The final blog post should clearly demonstrate experience, expertise, authoritativeness, and trustworthiness.
+        ### Task:
+        Write a comprehensive, engaging, and SEO-optimized blog post on the topic below. The blog should:
+        - Be structured for readability with clear headings, subheadings, and bullet points.
+        - Include actionable insights, real-world examples, and personal anecdotes to make the content relatable and practical.
+        - Be written in a {input_tone} tone that balances professionalism with a conversational style.
 
-        Blog keywords: {input_blog_keywords}
-        Google SERP results: {serp_results}
+        ### Requirements:
+        1. **SEO Optimization**:
+           - Use the provided keywords naturally and strategically throughout the content.
+           - Incorporate semantic keywords and related terms to enhance search engine visibility.
+           - Align the content with Google's E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) guidelines.
+
+        2. **Content Structure**:
+           - Start with a compelling introduction that hooks the reader and outlines the blog's value.
+           - Organize the content with logical headings and subheadings.
+           - Use bullet points, numbered lists, and short paragraphs for readability.
+
+        3. **Engagement and Value**:
+           - Provide actionable tips, real-world examples, and personal anecdotes.
+           - Include at least one engaging call-to-action (CTA) to encourage reader interaction.
+
+        4. **FAQs Section**:
+           - Include 5 FAQs derived from “People also ask” queries and related search suggestions.
+           - Provide thoughtful, well-researched answers to each question.
+
+        5. **Visual and Multimedia Suggestions**:
+           - Recommend where to include images, infographics, or videos to enhance the content's appeal.
+
+        6. **SEO Metadata**:
+           - Append the following metadata after the main blog content:
+             - A **Blog Title** that is catchy and includes the primary keyword.
+             - A **Meta Description** summarizing the blog post in under 160 characters.
+             - A **URL Slug** that is short, descriptive, and formatted in lowercase with hyphens.
+             - A list of **Hashtags** relevant to the content.
+
+        ### Blog Details:
+        - **Title**: {input_blog_keywords}
+        - **Keywords**: {input_blog_keywords}
+        - **Google SERP Results**: {serp_results}
+
+        Now, craft an exceptional blog post that stands out in search results and delivers maximum value to readers.
         """
         return generate_text_with_exception_handling(prompt, gemini_api_key)
     return None
