@@ -22,23 +22,7 @@ The application requires the following dependencies:
 
 ## Installation
 
-### General Installation
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/AJaySi/alwrity_blog_writer.git
-    ```
-2. Install the required dependencies:
-    ```bash
-    pip install streamlit openai serper requests
-    ```
-3. Set the `SERPER_API_KEY` environment variable with your Serper API key.
-4. Run the application:
-    ```bash
-    streamlit run blog_from_serp.py
-    ```
-
-### Installation on Windows (using PowerShell)
+This installation process was tested on Windows PowerShell by the author.
 
 1. Clone the repository:
     ```powershell
@@ -48,17 +32,13 @@ The application requires the following dependencies:
     ```powershell
     cd alwrity_blog_writer
     ```
-3. Set the required API keys:
-    ```powershell
-    $env:METAPHOR_API_KEY = "your_metaphor_api_key_here"
-    $env:GOOGLE_API_KEY = "your_google_api_key_here"
-    ```
-4. Run the application:
+3. Run the application:
     ```powershell
     streamlit run blog_from_serp.py
     ```
+4. When the app opens in your browser, enter your API keys in the UI under the "API Configuration" section.
 
-For a complete beginner's guide, refer to [How to Easily Install Alwrity Blog Writer on Windows 11 using PowerShell](https://www.alwrity.com/post/howto-easily-install-alwrity-blog-writer-on-windows-11-using-powershell).
+No need to set environment variables or edit code—just provide your API keys in the app interface after launch.
 
 ## Usage
 
