@@ -2,7 +2,7 @@ import time
 import os
 import streamlit as st
 from tenacity import retry, stop_after_attempt, wait_random_exponential
-import google.generativeai as genai
+from google import genai
 from exa_py import Exa
 
 
@@ -142,7 +142,18 @@ def generate_blog_post(input_blog_keywords, input_type, input_tone, input_langua
         2. **Content Structure**:
            - Start with a compelling introduction that hooks the reader and outlines the blog's value.
            - Organize the content with logical headings and subheadings.
-           - Use bullet points, numbered lists, and short paragraphs for readability.
+           - Breakup text with clear headlines and bullet points for easier reading.
+           - Write in active voice and avoid using passive voice.
+           - Write in a simple and easy to understand human language.
+           - Use words that people would use to look at your blog content and place those words in the blog post.
+           - Include a clear CTAs at the end of the blog post.
+           - Do not repeate the same words or phrases in the blog post.
+           - Do not use fluff words or phrases.
+           - Write in a way that is easy to understand and read.
+           - Avoid using complex words or phrases.
+           - Avoid using jargon words or phrases.
+           - Avoid using words that are not related to the topic.
+           - Avoid using AI sounding words like realm, evolving, etc.
 
         3. **Engagement and Value**:
            - Provide actionable tips, real-world examples, and personal anecdotes.
@@ -155,7 +166,14 @@ def generate_blog_post(input_blog_keywords, input_type, input_tone, input_langua
         5. **Visual and Multimedia Suggestions**:
            - Recommend where to include images, infographics, or videos to enhance the content's appeal.
 
-        6. **SEO Metadata**:
+        6. **References Section**:
+           - Include a "References" section after the conclusion but before SEO metadata
+           - List all sources used for research with proper citations
+           - Use the actual URLs from the search results provided
+           - Format as numbered list: [Article Title] - [URL]
+           - Include only the article title and clickable link
+           
+        7. **SEO Metadata**:
            - Append the following metadata after the main blog content:
              - A **Blog Title** that is catchy and includes the primary keyword.
              - A **Meta Description** summarizing the blog post in under 160 characters.
@@ -181,7 +199,7 @@ def metaphor_search_articles(query, api_key):
     metaphor = Exa(api_key)
     
     try:
-        search_response = metaphor.search_and_contents(query, use_autoprompt=True, num_results=5)
+        search_response = metaphor.search_and_contents(query, num_results=5)
         return search_response.results
     except Exception as err:
         st.error(f"Failed in metaphor.search_and_contents: {err}")
@@ -192,11 +210,13 @@ def metaphor_search_articles(query, api_key):
 @retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(6))
 def generate_text_with_exception_handling(prompt, api_key):
     try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel(model_name="gemini-2.0-flash", generation_config={"max_output_tokens": 8192})
-        convo = model.start_chat(history=[])
-        convo.send_message(prompt)
-        return convo.last.text
+        # The client automatically picks up the API key from the parameter
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
+        return response.text
     except Exception as e:
         st.exception(f"An unexpected error occurred: {e}")
         return None

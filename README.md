@@ -2,6 +2,10 @@
 
 Alwrity is a Streamlit app that generates comprehensive, SEO‑oriented blog posts. It enriches your prompt with web search context using Exa (formerly Metaphor) and writes the article with Google Gemini.
 
+## 🚀 Try Online
+
+**Want to test the tool without installation?** Visit our web version: **[Try AI Blog Writer on Alwrity.com](https://www.alwrity.com/ai-blog-writer)**
+
 ## Features
 
 - **Keyword‑driven generation**: Provide a topic/keywords; get a full article.
@@ -16,7 +20,7 @@ Install from `requirements.txt`:
 
 - `streamlit`
 - `exa_py` (Exa/Metaphor web search)
-- `google.generativeai` (Gemini)
+- `google-genai` (Gemini API)
 - `tenacity` (robust retries)
 
 ## Getting started (Windows PowerShell tested)
